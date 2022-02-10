@@ -11,7 +11,13 @@ router.get('/hello/world', function (req, res) {
 });
 
 router.get('/', async (req, res, next) => {
-
+  try {
+    const players = await db.Player.findAll();
+    console.log(players);
+    res.send(players)
+  } catch (err) {
+    next(err)
+  }
 })
 
 module.exports = router;
