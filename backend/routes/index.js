@@ -13,8 +13,8 @@ router.get('/hello/world', function (req, res) {
 router.get('/', async (req, res, next) => {
   try {
     const players = await db.Player.findAll();
-    console.log(players);
-    res.send(players)
+    console.log('is this thing on')
+    return res.json({players})
   } catch (err) {
     next(err)
   }

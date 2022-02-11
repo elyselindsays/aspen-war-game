@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     name: DataTypes.STRING
   }, {});
   Player.associate = function(models) {
-    // associations can be defined here
+    Player.hasMany(models.Winner, {foreignKey: 'playerId'})
   };
   return Player;
 };
