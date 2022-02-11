@@ -82,7 +82,7 @@ return (
   </div>
 <div style={{display: 'flex', flexDirection: 'row'}}>
       <h3>Player 2 Card</h3>
-      {p2Card && <p>{p2Card.value}asdasd</p>}
+      {p2Card && <p>{p2Card.value}</p>}
 </div>
 
   </>

@@ -26,6 +26,7 @@ const App = () => {
   const [thisIsWar, setThisIsWar] = useState(false);
 
   const [currentWinner, setCurrentWinner] = useState(null);
+  const [winnerData, setWinnerData] = useState(null)
 
 
 
@@ -40,29 +41,68 @@ const App = () => {
   }
   useEffect(()=> {
     connectToBackend()
-
   }, []);
   
+
+  const winnerHandler = async () => {
+    const res = await getWinnerData();
+    const parse = await res.json();
+    console.log(parse)
+    setWinnerData(parse)
+    
+  }
+
   useEffect(() => {
+    winnerHandler()
     setGameInSession(true);
     setPlayer1Hand(shuffledDeck.slice(0,26));
     setPlayer2Hand(shuffledDeck.slice(26));
   }, []);
 
   const flipCard = () => {
+
       setP1ActiveCard(player1Hand.pop());
       setP2ActiveCard(player2Hand.pop());
   }
 
+
+  const sendWinnerData = async () => {
+    const res = await fetch("http://localhost:5000/wins", {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({playerId: currentWinner})
+    })
+    const data = await res.json();
+    return data;
+  }
+
+  const getWinnerData = async() => {
+    const res = await fetch("http://localhost:5000/wins", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+    const data = await res.json();
+    return data;
+  }
+
+  useEffect(()=> {
+    sendWinnerData()
+  }, [currentWinner])
+
   useEffect(() => {
     if (player1Hand.length===0 && player2Hand.length!==0) {
       setGameInSession(false);
-      setCurrentWinner('Player 2')
+      setCurrentWinner(4)
       console.log('GAME OVER')
       console.log('PLAYER 2 WINS')
+
     } else if (player1Hand.length !== 0 && player2Hand.length === 0) {
       setGameInSession(false);
-      setCurrentWinner('Player 1')
+      setCurrentWinner(3)
       console.log('GAME OVER')
       console.log('PLAYER 1 WINS')
     } else {
@@ -84,7 +124,6 @@ const App = () => {
 
       {!gameInSession && <h2>{currentWinner} Wins!!!!!</h2>}
 
-      {/* {gameInSession && <button onClick={flipCard}>PLAY WAR</button>} */}
 
       <Gameboard 
         p1Card={p1ActiveCard} 
@@ -106,16 +145,16 @@ const App = () => {
         <div>
           {p1ActiveCard && <h2>{p1ActiveCard.value}</h2>}
           <h5>Player 1 Hand - {player1Hand.length}</h5>
-          {player1Hand && player1Hand.map((card, i) => (
+          {/* {player1Hand && player1Hand.map((card, i) => (
             <p key={i}>{card.value} {card.suit}</p>
-            ))}
+            ))} */}
         </div>
       <div >
           {p2ActiveCard && <h2>{p2ActiveCard.value}</h2>}
         <h5>Player 2 Hand - {player2Hand.length}</h5>
-          {player2Hand && player2Hand.map((card, i) => (
+          {/* {player2Hand && player2Hand.map((card, i) => (
             <p key={i}>{card.value} {card.suit}</p>
-          ))}
+          ))} */}
       </div>
       </div>
     </>
