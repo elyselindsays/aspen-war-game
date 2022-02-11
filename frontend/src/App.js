@@ -47,7 +47,6 @@ const App = () => {
   const winnerHandler = async () => {
     const res = await getWinnerData();
     const parse = await res.json();
-    console.log(parse)
     setWinnerData(parse)
     
   }
@@ -66,7 +65,7 @@ const App = () => {
   }
 
 
-  const sendWinnerData = async () => {
+  const postWinnerData = async () => {
     const res = await fetch("http://localhost:5000/wins", {
       method: 'POST',
       headers: {
@@ -86,23 +85,32 @@ const App = () => {
       }
     })
     const data = await res.json();
-    return data;
+    setWinnerData(data.wins)
   }
 
   useEffect(()=> {
-    sendWinnerData()
+    postWinnerData()
+    const winnerStats = getWinnerData();
+    setWinnerData(winnerStats.wins);
+    console.log(winnerData)
   }, [currentWinner])
+
+
+  useEffect(()=> {
+    getWinnerData()
+    console.log(winnerData)
+  }, [])
 
   useEffect(() => {
     if (player1Hand.length===0 && player2Hand.length!==0) {
       setGameInSession(false);
-      setCurrentWinner(4)
+      setCurrentWinner(2)
       console.log('GAME OVER')
       console.log('PLAYER 2 WINS')
 
     } else if (player1Hand.length !== 0 && player2Hand.length === 0) {
       setGameInSession(false);
-      setCurrentWinner(3)
+      setCurrentWinner(1)
       console.log('GAME OVER')
       console.log('PLAYER 1 WINS')
     } else {
@@ -112,18 +120,18 @@ const App = () => {
   }, [player1Hand, player2Hand]);
 
 
-
-
-
-
   return (
     <>
       <h1>Elyse's WAR GAME</h1>
 
-
-
       {!gameInSession && <h2>{currentWinner} Wins!!!!!</h2>}
 
+      {winnerData && winnerData.map((win, i) => (
+        <>
+        <p key={`id${i}`}>{win.playerId}</p>
+        <p key={`time${i}`}>{win.createdAt}</p>
+        </>
+      ))}
 
       <Gameboard 
         p1Card={p1ActiveCard} 
@@ -136,10 +144,7 @@ const App = () => {
         setP2ActiveCard={setP2ActiveCard}
         setThisIsWar={setThisIsWar}
         setGameInSession={setGameInSession}
-        setCurrentWinner={setCurrentWinner}
-       
-      
-      />
+        setCurrentWinner={setCurrentWinner}/>
 
       <div style={{display: 'flex', justifyContent: 'space-evenly', }}>
         <div>

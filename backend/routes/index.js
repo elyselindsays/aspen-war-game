@@ -5,10 +5,6 @@ const db = require('../db/models');
 
 router.use('/api', apiRouter);
 
-router.get('/hello/world', function (req, res) {
-
-  res.send('Hello World!');
-});
 
 router.get('/', async (req, res, next) => {
   try {
@@ -23,7 +19,7 @@ router.get('/', async (req, res, next) => {
 router.get('/wins', async (req, res, next) => {
   try {
     const wins = await db.Winner.findAll();
-    console.log(res.json(wins))
+    return res.json({wins})
   } catch(err) {
     next(err)
   }
@@ -38,4 +34,15 @@ router.post('/wins', async (req, res, next) => {
     next(err)
   }
 })
+
+router.get('/wins/1', async (req, res, next) => {
+  try {
+    const wins = await db.Winner.findAll();
+    console.log(res.json(wins))
+  } catch (err) {
+    next(err)
+  }
+})
+
+
 module.exports = router;

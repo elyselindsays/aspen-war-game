@@ -10,7 +10,8 @@ module.exports = {
       },
       playerId: {
         type: Sequelize.INTEGER,
-        references: {model: "Players"}
+        references: {model: "Players"},
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

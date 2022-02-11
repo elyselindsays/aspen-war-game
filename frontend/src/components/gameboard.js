@@ -27,12 +27,12 @@ export const Gameboard = ({p1Card, p2Card, setPlayer1Hand, setPlayer2Hand, playe
     if (warArr1.includes(undefined) && !warArr2.includes(undefined)) {
       setPlayer2Hand([...warArr2, ...warArr1, ...player2Hand])
       setGameInSession(false)
-      setCurrentWinner('Player 2')
+      setCurrentWinner(2)
       console.log('player 2 wins')
     } else if (!warArr1.includes(undefined) && warArr2.includes(undefined)) {
       setPlayer1Hand([...warArr1, ...warArr2, ...player1Hand])
       setGameInSession(false)
-      setCurrentWinner('Player 1')
+      setCurrentWinner(1)
       console.log('player 1 wins')
     } else if (warArr1[warArr1.length-1].value > warArr2[warArr2.length-1].value) {
       setPlayer1Hand([...warArr1, ...warArr2, ...player1Hand])
