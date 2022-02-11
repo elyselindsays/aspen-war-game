@@ -36,8 +36,7 @@ const App = () => {
       headers: {
         'Content-Type': 'application/json'}
     });
-    const body = await res.json();
-    console.log(body)
+    return res.json()
   }
   useEffect(()=> {
     connectToBackend()
@@ -78,7 +77,7 @@ const App = () => {
   }
 
   const getWinnerData = async() => {
-    const res = await fetch("http://localhost:5000/wins", {
+    const res = await fetch("http://localhost:5000/wins/1", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -86,33 +85,27 @@ const App = () => {
     })
     const data = await res.json();
     setWinnerData(data.wins)
+    console.log(winnerData)
   }
 
   useEffect(()=> {
     postWinnerData()
     const winnerStats = getWinnerData();
     setWinnerData(winnerStats.wins);
-    console.log(winnerData)
   }, [currentWinner])
 
 
   useEffect(()=> {
     getWinnerData()
-    console.log(winnerData)
   }, [])
 
   useEffect(() => {
     if (player1Hand.length===0 && player2Hand.length!==0) {
       setGameInSession(false);
-      setCurrentWinner(2)
-      console.log('GAME OVER')
-      console.log('PLAYER 2 WINS')
-
+      setCurrentWinner(2);
     } else if (player1Hand.length !== 0 && player2Hand.length === 0) {
       setGameInSession(false);
       setCurrentWinner(1)
-      console.log('GAME OVER')
-      console.log('PLAYER 1 WINS')
     } else {
       setGameInSession(true)
       flipCard()
@@ -120,18 +113,32 @@ const App = () => {
   }, [player1Hand, player2Hand]);
 
 
+
+  // TODO: GET single player wins
+
+  // TODO: remove console.logs
+
+  // TODO: deploy to heroku
+
+  // TODO: update undefined logic
+
+  // TODO: basic styling
+
+  // TODO: add wins stats chart
+
+
   return (
     <>
       <h1>Elyse's WAR GAME</h1>
 
-      {!gameInSession && <h2>{currentWinner} Wins!!!!!</h2>}
+      {!gameInSession && <h2>Player {currentWinner} Wins!!!!!</h2>}
 
-      {winnerData && winnerData.map((win, i) => (
+      {/* {winnerData && winnerData.map((win, i) => (
         <>
         <p key={`id${i}`}>{win.playerId}</p>
         <p key={`time${i}`}>{win.createdAt}</p>
         </>
-      ))}
+      ))} */}
 
       <Gameboard 
         p1Card={p1ActiveCard} 

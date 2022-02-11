@@ -3,20 +3,21 @@ import { useEffect, useState } from "react";
 
 export const Gameboard = ({p1Card, p2Card, setPlayer1Hand, setPlayer2Hand, player1Hand, player2Hand, setP1ActiveCard, setP2ActiveCard, setThisIsWar, setGameInSession, setCurrentWinner}) => {
 
+
+
   const [warArr1, setWarArr1] = useState([]);
   const [warArr2, setWarArr2] = useState([]);
 
+  const [warState, setWarState] = useState(false);
+
   useEffect(()=> {
-    console.log(p1Card, p2Card)
-    console.log(player1Hand)
-    console.log(player2Hand)
     compareCards()
   }, [p1Card, p2Card]);
 
 
 
   const playWar = () => {
-    setThisIsWar(true)
+    setWarState(true)
     console.log('PLAY WAR')
     warArr1.push(player1Hand.pop())
     warArr2.push(player2Hand.pop())
@@ -38,12 +39,12 @@ export const Gameboard = ({p1Card, p2Card, setPlayer1Hand, setPlayer2Hand, playe
       setPlayer1Hand([...warArr1, ...warArr2, ...player1Hand])
       setWarArr1([])
       setWarArr2([])
-      setThisIsWar(false)
+      setWarState(false)
     } else if (warArr1[warArr1.length - 1].value < warArr2[warArr2.length - 1].value) {
       setPlayer2Hand([...warArr2, ...warArr1, ...player2Hand])
       setWarArr1([])
       setWarArr2([])
-      setThisIsWar(false)
+      setWarState(false)
     } else if (warArr1[warArr1.length - 1].value === warArr2[warArr2.length - 1].value) {
       playWar()
     } 
@@ -75,7 +76,7 @@ export const Gameboard = ({p1Card, p2Card, setPlayer1Hand, setPlayer2Hand, playe
 
 
 return (
-  <>
+  <div style={{backgroundColor: warState ? 'red' : 'white'}}>
   <div style={{display: 'flex', flexDirection: 'row'}}>
       <h3>Player 1 Card</h3>
       {p1Card && <p>{p1Card.value}</p>}
@@ -85,6 +86,6 @@ return (
       {p2Card && <p>{p2Card.value}</p>}
 </div>
 
-  </>
+  </div>
 )
 };

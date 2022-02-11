@@ -9,7 +9,6 @@ router.use('/api', apiRouter);
 router.get('/', async (req, res, next) => {
   try {
     const players = await db.Player.findAll();
-    console.log('is this thing on')
     return res.json({players})
   } catch (err) {
     next(err)
@@ -37,8 +36,20 @@ router.post('/wins', async (req, res, next) => {
 
 router.get('/wins/1', async (req, res, next) => {
   try {
-    const wins = await db.Winner.findAll();
-    console.log(res.json(wins))
+    const wins = await db.Winner.findAll({
+      where: {playerId: 1}
+    });
+    return res.json({wins})
+  } catch (err) {
+    next(err)
+  }
+})
+router.get('/wins/2', async (req, res, next) => {
+  try {
+    const wins = await db.Winner.findAll({
+      where: {playerId: 2}
+    });
+    return res.json({wins})
   } catch (err) {
     next(err)
   }
