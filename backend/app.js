@@ -26,11 +26,11 @@ if (process.env.NODE_ENV === 'production') {
     );
   });
   router.use(express.static(path.resolve("../frontend/build")));
-  router.get(/^(?!\/?api).*/, (req, res) => {
-    res.sendFile(
-      path.resolve(__dirname, '../../frontend', 'build', 'index.html')
-    );
-  });
+  // router.get(/^(?!\/?api).*/, (req, res) => {
+  //   res.sendFile(
+  //     path.resolve(__dirname, '../../frontend', 'build', 'index.html')
+  //   );
+  // });
 }
 
 
