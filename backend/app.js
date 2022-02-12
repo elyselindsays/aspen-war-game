@@ -6,14 +6,6 @@ const routes = require('./routes');
 
 
 const { environment } = require('./config');
-const isProduction = environment === 'production';
-
-const app = express();
-
-app.use(morgan('dev'));
-
-app.use(express.json());
-
 if (process.env.NODE_ENV === 'production') {
   const path = require('path');
   router.get('/', (req, res) => {
@@ -28,6 +20,14 @@ if (process.env.NODE_ENV === 'production') {
     );
   });
 }
+const isProduction = environment === 'production';
+
+const app = express();
+
+app.use(morgan('dev'));
+
+app.use(express.json());
+
 
 if (!isProduction) {
   app.use(cors());
