@@ -5,7 +5,7 @@ const router = express.Router();
 const routes = require('./routes');
 const { environment } = require('./config');
 const path = require("path");
-
+const app = express();
 if (process.env.NODE_ENV === "production") {
 
   app.use(express.static("client/build"));
@@ -33,7 +33,7 @@ if (process.env.NODE_ENV === "production") {
 // }
 const isProduction = environment === 'production';
 
-const app = express();
+
 
 app.use(morgan('dev'));
 
