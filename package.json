@@ -1,31 +1,26 @@
 {
-  "name": "backend",
+  "name": "aspen_capital_war",
   "version": "1.0.0",
-  "description": "",
+  "description": "## War Card Game",
   "main": "index.js",
   "scripts": {
-        "sequelize": "sequelize",
-        "sequelize-cli": "sequelize-cli",
-        "start": "per-env",
-        "start:development": "nodemon -r dotenv/config ./bin/www",
-        "start:production": "node ./bin/www"
+    "heroku-postbuild": "npm run build --prefix frontend",
+    "install": "npm --prefix backend install backend && npm --prefix frontend install frontend",
+    "dev:backend": "npm install --prefix backend start",
+    "dev:frontend": "npm install --prefix frontend start",
+    "sequelize": "npm run --prefix backend sequelize",
+    "sequelize-cli": "npm run --prefix backend sequelize-cli",
+    "start": "npm start --prefix backend"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elyselindsays/aspen-war-game.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.0",
-    "express": "^4.17.2",
-    "express-async-handler": "^1.2.0",
-    "morgan": "^1.10.0",
-    "per-env": "^1.0.2",
-    "pg": "^8.7.3",
-    "sequelize": "^5.22.5",
-    "sequelize-cli": "^5.5.1"
+  "bugs": {
+    "url": "https://github.com/elyselindsays/aspen-war-game/issues"
   },
-  "devDependencies": {
-    "dotenv-cli": "^5.0.0",
-    "nodemon": "^2.0.15"
-  }
+  "homepage": "https://github.com/elyselindsays/aspen-war-game#readme"
 }

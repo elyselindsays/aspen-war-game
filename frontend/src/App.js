@@ -1,6 +1,7 @@
-
 import {useEffect, useState} from 'react';
 import { Gameboard } from './components/gameboard';
+import { LifetimeWins } from './components/LifetimeWins';
+import { connectToBackend } from './dispatches/apiDispatch';
 
 const suits = ['spades', 'clubs', 'diamonds', 'hearts'];
 const ranks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13];
@@ -30,16 +31,9 @@ const App = () => {
 
 
 
-  const connectToBackend = async () => {
-    const res = await fetch("http://localhost:5000/", {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'}
-    });
-    return res.json()
-  }
+
   useEffect(()=> {
-    connectToBackend()
+    connectToBackend();
   }, []);
   
 
@@ -58,11 +52,9 @@ const App = () => {
   }, []);
 
   const flipCard = () => {
-
-      setP1ActiveCard(player1Hand.pop());
-      setP2ActiveCard(player2Hand.pop());
+    setP1ActiveCard(player1Hand.pop());
+    setP2ActiveCard(player2Hand.pop());
   }
-
 
   const postWinnerData = async () => {
     const res = await fetch("http://localhost:5000/wins", {
@@ -118,8 +110,6 @@ const App = () => {
 
   // TODO: remove console.logs
 
-  // TODO: deploy to heroku
-
   // TODO: update undefined logic
 
   // TODO: basic styling
@@ -130,18 +120,13 @@ const App = () => {
 
 
   return (
-    <>
-      <h1>Elyse's WAR GAME</h1>
+    <div>
+      <h1 style={{textAlign: 'center'}}>Aspen Capital WAR GAME</h1>
 
       {!gameInSession && <h2>Player {currentWinner} Wins!!!!!</h2>}
 
 
-      {winnerData && (
-        <div>
-          <p>Player 1 Lifetime Wins: {winnerData.length}</p>
-          <p>Player 2 Lifetime Wins: {}</p>
-        </div>
-      )}
+
 
       <Gameboard 
         p1Card={p1ActiveCard} 
@@ -160,19 +145,14 @@ const App = () => {
         <div>
           {p1ActiveCard && <h2>{p1ActiveCard.value}</h2>}
           <h5>Player 1 Hand - {player1Hand.length}</h5>
-          {/* {player1Hand && player1Hand.map((card, i) => (
-            <p key={i}>{card.value} {card.suit}</p>
-            ))} */}
         </div>
-      <div >
+        <div >
           {p2ActiveCard && <h2>{p2ActiveCard.value}</h2>}
-        <h5>Player 2 Hand - {player2Hand.length}</h5>
-          {/* {player2Hand && player2Hand.map((card, i) => (
-            <p key={i}>{card.value} {card.suit}</p>
-          ))} */}
+          <h5>Player 2 Hand - {player2Hand.length}</h5>
+        </div>
       </div>
-      </div>
-    </>
+      <LifetimeWins winnerData={winnerData} />
+    </div>
   );
 }
 
