@@ -1,7 +1,9 @@
 const express = require('express');
 const morgan = require('morgan');
 const cors = require('cors');
+const router = express.Router();
 const routes = require('./routes');
+
 
 const { environment } = require('./config');
 const isProduction = environment === 'production';
