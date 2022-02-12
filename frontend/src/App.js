@@ -24,13 +24,10 @@ const App = () => {
   const [p1ActiveCard, setP1ActiveCard] = useState(null);
   const [p2ActiveCard, setP2ActiveCard] = useState(null);
 
-  const [thisIsWar, setThisIsWar] = useState(false);
-
   const [currentWinner, setCurrentWinner] = useState(null);
   const [winnerData, setWinnerData] = useState(null)
-
-
-
+  const [p1Wins, setP1Wins] = useState([])
+  const [p2Wins, setP2Wins] = useState([])
 
   useEffect(()=> {
     connectToBackend();
@@ -41,7 +38,6 @@ const App = () => {
     const res = await getWinnerData();
     const parse = await res.json();
     setWinnerData(parse)
-    
   }
 
   useEffect(() => {
@@ -69,15 +65,23 @@ const App = () => {
   }
 
   const getWinnerData = async() => {
-    const res = await fetch("http://localhost:5000/wins", {
+    const res1 = await fetch("http://localhost:5000/wins/1", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
       }
     })
-    const data = await res.json();
-    setWinnerData(data.wins)
-    console.log(winnerData)
+    const res2 = await fetch("http://localhost:5000/wins/2", {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    })
+
+    const parsed1 = await res1.json()
+    const parsed2 = await res2.json()
+    setP1Wins(parsed1)
+    setP2Wins(parsed2)
   }
 
   useEffect(()=> {
@@ -89,6 +93,7 @@ const App = () => {
 
   useEffect(()=> {
     getWinnerData()
+    console.log(p1Wins)
   }, [])
 
   useEffect(() => {
@@ -105,29 +110,24 @@ const App = () => {
   }, [player1Hand, player2Hand]);
 
 
-
-  // TODO: GET single player wins
-
-  // TODO: remove console.logs
-
-  // TODO: update undefined logic
-
-  // TODO: basic styling
-
-  // TODO: add wins stats chart
-
-  // TODO: add/fix war state
-
-
   return (
-    <div>
+    <div style={{fontFamily: 'sans-serif'}}>
       <h1 style={{textAlign: 'center'}}>Aspen Capital WAR GAME</h1>
 
-      {!gameInSession && <h2>Player {currentWinner} Wins!!!!!</h2>}
+      {!gameInSession && <h2 style={{ textAlign: 'center' }}>Player {currentWinner} Wins!!!!!</h2>}
 
 
-
-
+      <div style={{display: 'flex', justifyContent: 'space-evenly', }}>
+        <div>
+          {p1ActiveCard && <h2>{p1ActiveCard.value}</h2>}
+          <h3>Player 1 Hand - {player1Hand.length}</h3>
+        </div>
+        <div >
+          {p2ActiveCard && <h2>{p2ActiveCard.value}</h2>}
+          <h3>Player 2 Hand - {player2Hand.length}</h3>
+        </div>
+      </div>
+      <LifetimeWins p1Wins={p1Wins} p2Wins={p2Wins} />
       <Gameboard 
         p1Card={p1ActiveCard} 
         p2Card={p2ActiveCard} 
@@ -137,21 +137,8 @@ const App = () => {
         player2Hand={player2Hand}
         setP1ActiveCard={setP1ActiveCard}
         setP2ActiveCard={setP2ActiveCard}
-        setThisIsWar={setThisIsWar}
         setGameInSession={setGameInSession}
         setCurrentWinner={setCurrentWinner}/>
-
-      <div style={{display: 'flex', justifyContent: 'space-evenly', }}>
-        <div>
-          {p1ActiveCard && <h2>{p1ActiveCard.value}</h2>}
-          <h5>Player 1 Hand - {player1Hand.length}</h5>
-        </div>
-        <div >
-          {p2ActiveCard && <h2>{p2ActiveCard.value}</h2>}
-          <h5>Player 2 Hand - {player2Hand.length}</h5>
-        </div>
-      </div>
-      <LifetimeWins winnerData={winnerData} />
     </div>
   );
 }
