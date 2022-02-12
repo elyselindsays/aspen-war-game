@@ -1,5 +1,5 @@
 
-import {useEffect, useState, useRef} from 'react';
+import {useEffect, useState} from 'react';
 import { Gameboard } from './components/gameboard';
 
 const suits = ['spades', 'clubs', 'diamonds', 'hearts'];
@@ -77,7 +77,7 @@ const App = () => {
   }
 
   const getWinnerData = async() => {
-    const res = await fetch("http://localhost:5000/wins/1", {
+    const res = await fetch("http://localhost:5000/wins", {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -126,6 +126,8 @@ const App = () => {
 
   // TODO: add wins stats chart
 
+  // TODO: add/fix war state
+
 
   return (
     <>
@@ -133,12 +135,13 @@ const App = () => {
 
       {!gameInSession && <h2>Player {currentWinner} Wins!!!!!</h2>}
 
-      {/* {winnerData && winnerData.map((win, i) => (
-        <>
-        <p key={`id${i}`}>{win.playerId}</p>
-        <p key={`time${i}`}>{win.createdAt}</p>
-        </>
-      ))} */}
+
+      {winnerData && (
+        <div>
+          <p>Player 1 Lifetime Wins: {winnerData.length}</p>
+          <p>Player 2 Lifetime Wins: {}</p>
+        </div>
+      )}
 
       <Gameboard 
         p1Card={p1ActiveCard} 

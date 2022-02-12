@@ -34,26 +34,5 @@ router.post('/wins', async (req, res, next) => {
   }
 })
 
-router.get('/wins/1', async (req, res, next) => {
-  try {
-    const wins = await db.Winner.findAll({
-      where: {playerId: 1}
-    });
-    return res.json({wins})
-  } catch (err) {
-    next(err)
-  }
-})
-router.get('/wins/2', async (req, res, next) => {
-  try {
-    const wins = await db.Winner.findAll({
-      where: {playerId: 2}
-    });
-    return res.json({wins})
-  } catch (err) {
-    next(err)
-  }
-})
-
 
 module.exports = router;
