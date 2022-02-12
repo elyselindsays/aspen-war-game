@@ -14,10 +14,6 @@ app.use(morgan('dev'));
 
 app.use(express.json());
 
-if (!isProduction) {
-  app.use(cors());
-};
-
 if (process.env.NODE_ENV === 'production') {
   const path = require('path');
   router.get('/', (req, res) => {
@@ -32,6 +28,12 @@ if (process.env.NODE_ENV === 'production') {
     );
   });
 }
+
+if (!isProduction) {
+  app.use(cors());
+};
+
+
 
 
 app.use(routes);
