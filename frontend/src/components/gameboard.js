@@ -54,7 +54,7 @@ export const Gameboard = ({
     } else if (warArr1[warArr1.length - 1].value === warArr2[warArr2.length - 1].value) {
       playWar()
     } 
-  }
+  };
 
   const compareCards = () => {
     if (p1Card && p2Card) {
@@ -79,7 +79,7 @@ export const Gameboard = ({
         playWar()
       }
     }
-  }
+  };
 
 
 return (
