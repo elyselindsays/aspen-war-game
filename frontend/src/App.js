@@ -115,18 +115,6 @@ const App = () => {
       <h1 style={{textAlign: 'center'}}>Aspen Capital WAR GAME</h1>
 
       {!gameInSession && <h2 style={{ textAlign: 'center' }}>Player {currentWinner} Wins!!!!!</h2>}
-
-
-      <div style={{display: 'flex', justifyContent: 'space-evenly', }}>
-        <div>
-          {p1ActiveCard && <h2>{p1ActiveCard.value}</h2>}
-          <h3>Player 1 Hand - {player1Hand.length}</h3>
-        </div>
-        <div >
-          {p2ActiveCard && <h2>{p2ActiveCard.value}</h2>}
-          <h3>Player 2 Hand - {player2Hand.length}</h3>
-        </div>
-      </div>
       <LifetimeWins p1Wins={p1Wins} p2Wins={p2Wins} />
       <Gameboard 
         p1Card={p1ActiveCard} 
@@ -139,6 +127,18 @@ const App = () => {
         setP2ActiveCard={setP2ActiveCard}
         setGameInSession={setGameInSession}
         setCurrentWinner={setCurrentWinner}/>
+
+      <div style={{display: 'flex', justifyContent: 'space-evenly', }}>
+        <div>
+          <h3>Player 1 Hand - {player1Hand.length}</h3>
+          {p1ActiveCard && <h2>{p1ActiveCard.value}</h2>}
+        </div>
+        <div >
+          <h3>Player 2 Hand - {player2Hand.length}</h3>
+          {p2ActiveCard && <h2>{p2ActiveCard.value}</h2>}
+        </div>
+      </div>
+
     </div>
   );
 }

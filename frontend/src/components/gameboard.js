@@ -26,12 +26,36 @@ export const Gameboard = ({
 
 
   const playWar = () => {
-    warArr1.push(player1Hand.pop())
-    warArr2.push(player2Hand.pop())
-    warArr1.push(player1Hand.pop())
-    warArr2.push(player2Hand.pop())
+    const p1War1 = player1Hand.pop()
+    warArr1.push(p1War1)
+    const p1War2 = player1Hand.pop()
+    warArr1.push(p1War2)
+    const p2War1 = player2Hand.pop()
+    warArr2.push(p2War1)
+    const p2War2 = player2Hand.pop()
+    warArr2.push(p2War2);
 
-    if (warArr1.includes(undefined) && !warArr2.includes(undefined)) {
+    if (!warArr1.includes(undefined) && !warArr2.includes(undefined)) {
+      if (warArr1[warArr1.length - 1].value > warArr2[warArr2.length - 1].value) {
+        moveHistory.push(`Player 1 and Player 2 each flipped a card face down.`)
+        moveHistory.push(`Player 1 played ${p1War2.value} of ${p1War2.suit}`)
+        moveHistory.push(`Player 2 played ${p2War2.value} of ${p2War2.suit}`)
+        moveHistory.push(`${p1War2.value} is higher`)
+        setPlayer1Hand([...warArr1, ...warArr2, ...player1Hand])
+        setWarArr1([])
+        setWarArr2([])
+      } else if (warArr1[warArr1.length - 1].value < warArr2[warArr2.length - 1].value) {
+        moveHistory.push(`Player 1 and Player 2 each flipped a card face down.`)
+        moveHistory.push(`Player 1 played ${p1War2.value} of ${p1War2.suit}`)
+        moveHistory.push(`Player 2 played ${p2War2.value} of ${p2War2.suit}`)
+        moveHistory.push(`${p2War2.value} is higher`)
+        setPlayer2Hand([...warArr2, ...warArr1, ...player2Hand])
+        setWarArr1([])
+        setWarArr2([])
+      } else if (warArr1[warArr1.length - 1].value === warArr2[warArr2.length - 1].value) {
+        playWar()
+      } 
+    } else if (warArr1.includes(undefined) && !warArr2.includes(undefined)) {
       const filtered1 = warArr1.filter(card => card !== undefined)
       const filtered2 = warArr2.filter(card => card !== undefined)
       setPlayer2Hand([...filtered1, ...filtered2, ...player2Hand])
@@ -43,22 +67,12 @@ export const Gameboard = ({
       setPlayer2Hand([...filtered1, ...filtered2, ...player2Hand])
       setGameInSession(false)
       setCurrentWinner(1)
-    } else if (warArr1[warArr1.length-1].value > warArr2[warArr2.length-1].value) {
-      setPlayer1Hand([...warArr1, ...warArr2, ...player1Hand])
-      setWarArr1([])
-      setWarArr2([])
-    } else if (warArr1[warArr1.length - 1].value < warArr2[warArr2.length - 1].value) {
-      setPlayer2Hand([...warArr2, ...warArr1, ...player2Hand])
-      setWarArr1([])
-      setWarArr2([])
-    } else if (warArr1[warArr1.length - 1].value === warArr2[warArr2.length - 1].value) {
-      playWar()
     } 
   };
 
   const compareCards = () => {
     if (p1Card && p2Card) {
-      moveHistory.push(`Player 1 played a ${p1Card.value} of ${p1Card.suit} Player 2 played a ${p2Card.value} of ${p2Card.suit}`)
+      moveHistory.push(`Player 1 played ${p1Card.value} of ${p1Card.suit} Player 2 played ${p2Card.value} of ${p2Card.suit}`)
       if (p1Card.value > p2Card.value) {
         moveHistory.push(`${p1Card.value} is higher`)
         setPlayer1Hand([p1Card, p2Card, ...player1Hand])
